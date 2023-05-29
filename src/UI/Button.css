@@ -1,0 +1,26 @@
+.btntype-1, .btntype-2, .widebtn{
+  display: inline;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  margin: 2px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btntype-1 {
+  background-color: #D4FAFC;
+}
+.btntype-2, .widebtn{
+  background-color: #f5923e;
+  color: white;
+}
+.widebtn{
+  width: 100px;
+}
+
+.btntype-1:hover,
+.btntype-2:hover,
+.widebtn:hover {
+  border: 2px dotted black;
+}
