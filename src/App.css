@@ -1,11 +1,44 @@
 .app {
-  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #CCCCCC;
+}
+.component-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .display{
   height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 16px;
+  display: flex;
+  align-items: center ;
+  padding: 10px;
+  font-size: 24px;
+}
+
+.display-answer {
+  color: #48464C;
+}
+
+.display-wrapper {
+  width: 100%;
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.button-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-end;
 }

@@ -45,52 +45,70 @@ const Calculator = () => {
   };
 
   const calculate = (compute = false) => {
-    // console.warn(displayValue)
     let calculatedValue = null
     try {
-      calculatedValue = eval(displayValue) || ''
+      let tempDisplayValue = displayValue
+      tempDisplayValue = tempDisplayValue.replace('x', '*')
+      tempDisplayValue = tempDisplayValue.replace('÷', '/')
+      // eslint-disable-next-line
+      calculatedValue = eval(tempDisplayValue) || ''
       if (compute) {
         setAnswer('')
         setDisplayValue(String(calculatedValue))
       } else {
-        setAnswer(String(calculatedValue))
+        if (String(calculatedValue) === displayValue) {
+          setAnswer('')
+        } else {
+          setAnswer(String(calculatedValue))
+        }
       }
     } catch (error) {
       // console.error(error)
       setAnswer('')
     }
   }
+
   useEffect(calculate, [displayValue])
 
-  const handlePercentage = () => {
-    setDisplayValue((prevDisplayValue) => {
-      const changedValue = parseFloat(prevDisplayValue) /100;
-      return String(changedValue)
-    })
-  }
+  // const handlePercentage = () => {
+  //   setDisplayValue((prevDisplayValue) => {
+  //     const changedValue = parseFloat(prevDisplayValue) /100;
+  //     return String(changedValue)
+  //   })
+  // }
 
   const handleSign = () => {
-    setDisplayValue((prevDisplayValue) => {
-      const newValue = parseFloat(prevDisplayValue) * -1;
-      return String(newValue);
-    });
+    if (waitingForOperand) return
+    const lastOperatorIndex = displayValue.lastIndexOf(operator)
+    const lastOperand = displayValue.slice(lastOperatorIndex+1)
+    let updatedLastOperand = ''
+    if (lastOperand.startsWith('(-') && lastOperand.endsWith(')')) {
+      updatedLastOperand = lastOperand.slice(2, -1)
+    } else {
+      updatedLastOperand = '(-' + lastOperand + ')'
+    }
+    const newDisplayValue = displayValue.slice(0, lastOperatorIndex+1) + updatedLastOperand
+    setDisplayValue(newDisplayValue)
   }
   
   return(
     <div className="component-button">
+      <div className="display-wrapper">
         <div className="display">{displayValue}</div>
-        <div className="display">{answer}</div>
+        <div className="display display-answer">{answer}</div>
+      </div>
+      <div className="button-panel">
         <div>
-          <Button text={'AC'} className="btntype-1" onClick={() => handleClear()}/>
-          <Button text={'+/-'} className="btntype-1" onClick={() => handleSign()}/>
-          <Button text={'%'} className="btntype-1" onClick={() => handlePercentage()}/>
+          <Button text={'AC'} className="widebtn" onClick={() => handleClear()}/>
+          <Button text={'+/-'} className="btntype-2" onClick={() => handleSign()}/>
+          {/* <Button text={'%'} className="btntype-1" onClick={() => handlePercentage()}/> */}
           <Button text={'÷'} className="btntype-2" onClick={() => handleOperation('÷')}/>
         </div>
         <div>
           <Button text={'7'} className="btntype-1" onClick={() => handleDigit('7')}/>
           <Button text={'8'} className="btntype-1" onClick={() => handleDigit('8')}/>
           <Button text={'9'} className="btntype-1" onClick={() => handleDigit('9')}/>
-          <Button text={'x'} className="btntype-2" onClick={() => handleOperation('*')}/>
+          <Button text={'x'} className="btntype-2" onClick={() => handleOperation('x')}/>
         </div>
         <div>
           <Button text={'4'} className="btntype-1" onClick={() => handleDigit('4')}/>
@@ -110,6 +128,7 @@ const Calculator = () => {
           <Button text={'='} className="widebtn" onClick={() => calculate(true)}/>
         </div>
       </div>
+    </div>
   )
 }
 export default Calculator
